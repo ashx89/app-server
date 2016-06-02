@@ -1,0 +1,18 @@
+{
+	"host": "localhost",
+	"apiHost": "api.localhost",
+
+	"port": 80,
+	"database": "",
+
+	"ssl": {
+		"enable301Redirects": true,
+  		"trustXFPHeader": false,
+  		"httpsPort": 443,
+  		"sslRequiredMessage": "SSL Required."
+	},
+
+	"secret": "",
+
+	"unless": []
+}
