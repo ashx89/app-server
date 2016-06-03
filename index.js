@@ -10,19 +10,6 @@ var app = express();
 var vhost = require('vhost');
 var config = require('config');
 
-/**
- * Import sub applications
- */
-var authenticationApp = require('../app-auth')(config);
-
-/**
- * Import application utils
- */
-var errorHandler = require('../app-util').error;
-var tokenHandler = require('../app-util').token;
-
-tokenHandler.setConfig(config);
-
 // { expiresIn: 60 * 2 }
 
 /**
@@ -45,28 +32,38 @@ app.use(require('cookie-parser')());
 app.use(require('method-override')());
 app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
+
+/**
+* Import application utils token
+*/
+var tokenHandler = require('../app-util').token;
+tokenHandler.setConfig(config);
+
 app.use(tokenHandler.require());
 
 /**
- * Routes:: Authentication
- */
+* Import sub applications
+*/
+var authenticationApp = require('../app-auth')(config);
+
 app.use(vhost(config.get('apiHost'), authenticationApp));
 
 /**
  * Routes:: Not Found
  */
-app.all('*', function onNotFound(req, res, next) {
+app.all('*', function onNotFound(req, res) {
 	return res.status(404).json({
-		title:'Resource you are looking for is not found', 
-		status: 404, 
-		path: req.path 
+		title: 'Resource you are looking for is not found',
+		status: 404,
+		path: req.path
 	});
 });
 
 /**
- * Routes:: Error
- * [App Util]
- */
+* Import application utils error
+*/
+var errorHandler = require('../app-util').error;
+
 app.use(errorHandler);
 
 /**

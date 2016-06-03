@@ -19,7 +19,6 @@
   "dependencies": {
     "app-util": "git+https://github.com/ashx89/app-util.git#v0.1.0",
     "app-authentication": "git+https://github.com/ashx89/app-authentication.git#v0.1.0",
-    "bcrypt": "^0.8.6",
     "body-parser": "^1.15.1",
     "config": "^1.21.0",
     "cookie-parser": "^1.4.3",
