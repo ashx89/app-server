@@ -13,7 +13,7 @@ var config = require('config');
 /**
  * Import sub applications
  */
-var authenticationApp = require('../app-authentication')(config);
+var authenticationApp = require('../app-auth')(config);
 
 /**
  * Import application utils
