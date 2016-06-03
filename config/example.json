@@ -1,9 +1,13 @@
 {
 	"host": "localhost",
+	
 	"apiHost": "api.localhost",
 
 	"port": 80,
+
 	"database": "",
+
+	"secret": "",
 
 	"ssl": {
 		"enable301Redirects": true,
@@ -11,8 +15,6 @@
   		"httpsPort": 443,
   		"sslRequiredMessage": "SSL Required."
 	},
-
-	"secret": "",
 
 	"unless": []
 }
