@@ -11,11 +11,10 @@ var app = express();
 var vhost = require('vhost');
 var config = require('config');
 
-// { expiresIn: 60 * 2 }
-
 /**
  * App Settings
  */
+app.disable('x-powered-by');
 app.enable('trust proxy');
 app.set('json spaces', 2);
 app.set('x-powered-by', false);
