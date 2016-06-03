@@ -5,13 +5,25 @@ var http = require('http');
 var https = require('https');
 
 var express = require('express');
-// var mongoose = require('mongoose');
-
 var app = express();
+
 var vhost = require('vhost');
 var config = require('config');
-var requireToken = require('./middleware/token').require();
 
+/**
+ * Import sub applications
+ */
+var authenticationApp = require('../app-authentication')(config);
+
+/**
+ * Import application utils
+ */
+var errorHandler = require('../app-util').error;
+var tokenHandler = require('../app-util').token;
+
+tokenHandler.setConfig(config);
+
+// { expiresIn: 60 * 2 }
 
 /**
  * App Settings
@@ -33,22 +45,29 @@ app.use(require('cookie-parser')());
 app.use(require('method-override')());
 app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
-app.use(requireToken);
+app.use(tokenHandler.require());
 
 /**
- * Check for token on routes
+ * Routes:: Authentication
  */
-
-
-/**
- * Routes :: Authentication
- */
-app.use(vhost(config.get('apiHost'), require('./app/authentication')));
+app.use(vhost(config.get('apiHost'), authenticationApp));
 
 /**
- * Routes :: Error
+ * Routes:: Not Found
  */
-app.use(require('./middleware/error'));
+app.all('*', function onNotFound(req, res, next) {
+	return res.status(404).json({
+		title:'Resource you are looking for is not found', 
+		status: 404, 
+		path: req.path 
+	});
+});
+
+/**
+ * Routes:: Error
+ * [App Util]
+ */
+app.use(errorHandler);
 
 /**
  * HTTP Connection
