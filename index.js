@@ -3,6 +3,7 @@ global.__base = __dirname;
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var mongoose = require('mongoose');
 
 var express = require('express');
 var app = express();
@@ -34,16 +35,16 @@ app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
 
 /**
-* Import application utils token
-*/
+ * Import application utils token
+ */
 var tokenHandler = require('../app-util').token;
 tokenHandler.setConfig(config);
 
 app.use(tokenHandler.require());
 
 /**
-* Import sub applications
-*/
+ * Import sub applications
+ */
 var authenticationApp = require('../app-auth')(config);
 
 app.use(vhost(config.get('apiHost'), authenticationApp));
@@ -53,15 +54,15 @@ app.use(vhost(config.get('apiHost'), authenticationApp));
  */
 app.all('*', function onNotFound(req, res) {
 	return res.status(404).json({
-		title: 'Resource you are looking for is not found',
+		title: 'Resource not found',
 		status: 404,
 		path: req.path
 	});
 });
 
 /**
-* Import application utils error
-*/
+ * Import application utils error
+ */
 var errorHandler = require('../app-util').error;
 
 app.use(errorHandler);
@@ -69,13 +70,17 @@ app.use(errorHandler);
 /**
  * HTTP Connection
  */
-https.createServer({
-	key: fs.readFileSync('./server.key'),
-	cert: fs.readFileSync('./server.crt')
-}, app).listen(config.get('ssl.httpsPort'));
+mongoose.connect(config.get('database'), function onDatabaseConnect(err) {
+	if (err) throw err;
 
-http.createServer(app).listen(config.get('port'));
+	https.createServer({
+		key: fs.readFileSync('./server.key'),
+		cert: fs.readFileSync('./server.crt')
+	}, app).listen(config.get('ssl.httpsPort'));
 
-app.get('/', function onAppStart(req, res) {
-	return res.sendStatus(200);
+	http.createServer(app).listen(config.get('port'));
+
+	app.get('/', function onAppStart(req, res) {
+		return res.sendStatus(200);
+	});
 });

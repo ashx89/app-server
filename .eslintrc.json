@@ -6,6 +6,7 @@
     "rules": {
         "indent": ["error", "tab"],
         "no-var": 0,
+        "no-shadow": 0,
         "wrap-iife": ["error", "any"],
         "vars-on-top": 0,
         "no-loop-func": 0,
