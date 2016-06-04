@@ -19,6 +19,7 @@ var errorHandler = require('../app-util').error;
 /**
  * Import sub applications
  */
+var componentsApp = require('./app/components')();
 var authenticationApp = require('../app-auth')(config);
 
 /**
@@ -67,6 +68,15 @@ app.use(tokenHandler.require());
  * Routes:: API Application
  */
 app.use(vhost(config.get('apiHost'), authenticationApp));
+app.use(vhost(config.get('apiHost'), componentsApp));
+
+
+app.get('/', function onAppStart(req, res) {
+	return res.status(200).json({
+		status: 200,
+		message: 'Welcome to the application API'
+	});
+});
 
 /**
  * Routes:: Not Found
@@ -96,11 +106,4 @@ mongoose.connect(config.get('database'), function onDatabaseConnect(err) {
 	}, app).listen(config.get('ssl.httpsPort'));
 
 	http.createServer(app).listen(config.get('port'));
-
-	app.get('/', function onAppStart(req, res) {
-		return res.sendStatus(200).json({
-			status: 200,
-			message: 'Welcome to the application API'
-		});
-	});
 });
