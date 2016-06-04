@@ -12,6 +12,22 @@ var vhost = require('vhost');
 var config = require('config');
 
 /**
+ * Import application utils error
+ */
+var errorHandler = require('../app-util').error;
+
+/**
+ * Import sub applications
+ */
+var authenticationApp = require('../app-auth')(config);
+
+/**
+ * Import application utils token
+ */
+var tokenHandler = require('../app-util').token;
+tokenHandler.setConfig(config);
+
+/**
  * App Settings
  */
 app.disable('x-powered-by');
@@ -27,25 +43,29 @@ app.set('forceSSLOptions', config.get('ssl'));
 app.use(require('helmet').hsts({ maxAge: 123000, includeSubdomains: true, force: true }));
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('body-parser').json());
-app.use(require('express-validator')());
+app.use(require('express-validator')({
+	errorFormatter: function onFormat(param, message, value) {
+		return {
+			status: 400,
+			value: value,
+			param: param,
+			message: message,
+			code: 'invalid_input',
+			name: 'ValidationError',
+			title: 'Validation Error'
+		};
+	}
+}));
 app.use(require('cookie-parser')());
 app.use(require('method-override')());
 app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
-
-/**
- * Import application utils token
- */
-var tokenHandler = require('../app-util').token;
-tokenHandler.setConfig(config);
-
 app.use(tokenHandler.require());
 
-/**
- * Import sub applications
- */
-var authenticationApp = require('../app-auth')(config);
 
+/**
+ * Routes:: API Application
+ */
 app.use(vhost(config.get('apiHost'), authenticationApp));
 
 /**
@@ -60,10 +80,8 @@ app.all('*', function onNotFound(req, res) {
 });
 
 /**
- * Import application utils error
+ * Routes:: Error Handler
  */
-var errorHandler = require('../app-util').error;
-
 app.use(errorHandler);
 
 /**
@@ -80,6 +98,9 @@ mongoose.connect(config.get('database'), function onDatabaseConnect(err) {
 	http.createServer(app).listen(config.get('port'));
 
 	app.get('/', function onAppStart(req, res) {
-		return res.sendStatus(200);
+		return res.sendStatus(200).json({
+			status: 200,
+			message: 'Welcome to the application API'
+		});
 	});
 });
