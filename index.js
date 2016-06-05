@@ -1,31 +1,34 @@
 global.__base = __dirname;
+require('dotenv').config();
 
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var vhost = require('vhost');
+var config = require('config');
 var mongoose = require('mongoose');
 
 var express = require('express');
 var app = express();
 
-var vhost = require('vhost');
-var config = require('config');
+var util = require('app-util');
 
 /**
  * Import application utils error
  */
-var errorHandler = require('../app-util').error;
+var errorHandler = util.error;
 
 /**
  * Import sub applications
  */
 var componentsApp = require('./app/components')();
+// if using module, dont need to mongoose.connect inside the module. (remove mongoose.connect)
 var authenticationApp = require('../app-auth')(config);
 
 /**
  * Import application utils token
  */
-var tokenHandler = require('../app-util').token;
+var tokenHandler = util.token;
 tokenHandler.setConfig(config);
 
 /**
@@ -35,7 +38,7 @@ app.disable('x-powered-by');
 app.enable('trust proxy');
 app.set('json spaces', 2);
 app.set('x-powered-by', false);
-app.set('port', config.get('port'));
+app.set('port', process.env.PORT || 3000);
 app.set('forceSSLOptions', config.get('ssl'));
 
 /**
@@ -67,8 +70,8 @@ app.use(tokenHandler.require());
 /**
  * Routes:: API Application
  */
-app.use(vhost(config.get('apiHost'), authenticationApp));
-app.use(vhost(config.get('apiHost'), componentsApp));
+app.use(vhost(process.env.API_HOST, authenticationApp));
+app.use(vhost(process.env.API_HOST, componentsApp));
 
 
 app.get('/', function onAppStart(req, res) {
@@ -97,7 +100,7 @@ app.use(errorHandler);
 /**
  * HTTP Connection
  */
-mongoose.connect(config.get('database'), function onDatabaseConnect(err) {
+mongoose.connect(process.env.DATABASE, function onDatabaseConnect(err) {
 	if (err) throw err;
 
 	https.createServer({
@@ -105,5 +108,5 @@ mongoose.connect(config.get('database'), function onDatabaseConnect(err) {
 		cert: fs.readFileSync('./server.crt')
 	}, app).listen(config.get('ssl.httpsPort'));
 
-	http.createServer(app).listen(config.get('port'));
+	http.createServer(app).listen(process.env.PORT);
 });
