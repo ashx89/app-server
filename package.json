@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/ashx89/app-server#readme",
   "dependencies": {
-    "app-auth": "git+https://github.com/ashx89/app-auth.git#v0.3.0",
-    "app-util": "git+https://github.com/ashx89/app-util.git#v0.2.0",
+    "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
+    "app-util": "git+https://github.com/ashx89/app-util.git#master",
     "body-parser": "^1.15.1",
     "config": "^1.21.0",
     "cookie-parser": "^1.4.3",
@@ -34,6 +34,7 @@
     "mongoose-validators": "^0.1.0",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
+    "node-geocoder": "^3.10.0",
     "underscore": "^1.8.3",
     "vhost": "^3.0.2"
   }

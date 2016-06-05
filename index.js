@@ -19,13 +19,6 @@ var util = require('app-util');
 var errorHandler = util.error;
 
 /**
- * Import sub applications
- */
-var componentsApp = require('./app/components')();
-// if using module, dont need to mongoose.connect inside the module. (remove mongoose.connect)
-var authenticationApp = require('../app-auth')(config);
-
-/**
  * Import application utils token
  */
 var tokenHandler = util.token;
@@ -68,6 +61,12 @@ app.use(tokenHandler.require());
 
 
 /**
+ * Import sub applications
+ */
+var authenticationApp = require('app-auth')();
+var componentsApp = require('./app/components')();
+
+/**
  * Routes:: API Application
  */
 app.use(vhost(process.env.API_HOST, authenticationApp));
@@ -79,6 +78,10 @@ app.get('/', function onAppStart(req, res) {
 		status: 200,
 		message: 'Welcome to the application API'
 	});
+});
+
+app.get('/verify', function onVerify(req, res, next) {
+	return tokenHandler.verify(req, res, next);
 });
 
 /**
