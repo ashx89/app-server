@@ -9,6 +9,13 @@ function validPostcodeLength(value) {
 	return value && value.length <= 9;
 }
 
+/**
+ * Check description character length
+ */
+function validTextLength(value) {
+	return value.length > 300;
+}
+
 var accountSchema = new mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId },
 	menu: { type: mongoose.Schema.Types.ObjectId },
@@ -20,6 +27,10 @@ var accountSchema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Missing Storename'],
 		validate: [validator.isAlpha, 'Invalid Storename']
+	},
+	description: {
+		type: String,
+		validate: [validTextLength, 'Description is too long']
 	},
 	address: {
 		address_line: {
@@ -88,8 +99,8 @@ accountSchema.pre('save', function onModelSave(next) {
 
 	geocoder.geocode(account.fulladdress, function onGeocode(err, res) {
 		if (err) return next(err);
-	  	account.address.location = [res[0].latitude, res[0].longitude];
-	  	return next();
+		account.address.location = [res[0].latitude, res[0].longitude];
+		return next();
 	});
 });
 
