@@ -2,6 +2,8 @@ var geocoder = require('node-geocoder')('google', 'https');
 var mongoose = require('mongoose');
 var validator = require('mongoose-validators');
 
+var METERS_IN_MILES = 1609.34;
+
 /**
  * Postcode max length 9. e.g. AB12 34CD
  */
@@ -72,7 +74,22 @@ var accountSchema = new mongoose.Schema({
 			required: [true, 'Missing Number of Days'],
 			validate: [validator.isNumeric, 'Invalid Number of Days']
 		}
-	}]
+	}],
+	delivery: {
+		radius: {
+			type: Number,
+			required: [true, 'Missing Delivery Radius']
+		},
+		min_cost: {
+			type: mongoose.Schema.Types.Mixed,
+			required: [true, 'Missing Minimum Delivery Cost'],
+			validate: [validator.isNumeric, 'Invalid Minimum Delivery Cost']
+		},
+		max_cost: {
+			type: mongoose.Schema.Types.Mixed,
+			required: [true, 'Missing Maximum Delivery Cost']
+		}
+	}
 }, {
 	minimize: true,
 	timestamps: true
@@ -94,6 +111,11 @@ accountSchema.virtual('minimum_order').get(function onGetMinimumOrder() {
 
 accountSchema.pre('save', function onModelSave(next) {
 	var account = this;
+
+	account.delivery.radius = parseInt(account.delivery.radius, 10) * METERS_IN_MILES;
+
+	if (account.delivery.min_cost === 0) account.delivery.min_cost = 'Free';
+	if (account.delivery.max_cost === 0) account.delivery.max_cost = 'Free';
 
 	geocoder.geocode(account.fulladdress, function onGeocode(err, res) {
 		if (err) return next(err);
