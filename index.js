@@ -13,23 +13,17 @@ var app = express();
 
 var util = require('app-util');
 
-/**
- * Import application utils error
- */
 var errorHandler = util.error;
-
-/**
- * Import application utils token
- */
 var tokenHandler = util.token;
+
 tokenHandler.setConfig(config);
 
 /**
  * App Settings
  */
-app.disable('x-powered-by');
-app.enable('trust proxy');
 app.set('json spaces', 2);
+app.enable('trust proxy');
+app.disable('x-powered-by');
 app.set('x-powered-by', false);
 app.set('port', process.env.PORT || 3000);
 app.set('forceSSLOptions', config.get('ssl'));
@@ -59,19 +53,14 @@ app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
 app.use(tokenHandler.require());
 
-
 /**
  * Import sub applications
  */
 var authenticationApp = require('app-auth');
 var componentsApp = require('./app/components');
 
-/**
- * Routes:: API Application
- */
 app.use(vhost(process.env.API_HOST, authenticationApp));
 app.use(vhost(process.env.API_HOST, componentsApp));
-
 
 app.get('/', function onAppStart(req, res) {
 	return res.status(200).json({
@@ -82,9 +71,6 @@ app.get('/', function onAppStart(req, res) {
 
 app.get('/verify', tokenHandler.verify);
 
-/**
- * Routes:: Not Found
- */
 app.all('*', function onNotFound(req, res) {
 	return res.status(404).json({
 		title: 'Resource not found',
@@ -93,9 +79,6 @@ app.all('*', function onNotFound(req, res) {
 	});
 });
 
-/**
- * Routes:: Error Handler
- */
 app.use(errorHandler);
 
 /**
