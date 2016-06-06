@@ -63,8 +63,8 @@ app.use(tokenHandler.require());
 /**
  * Import sub applications
  */
-var authenticationApp = require('app-auth')();
-var componentsApp = require('./app/components')();
+var authenticationApp = require('app-auth');
+var componentsApp = require('./app/components');
 
 /**
  * Routes:: API Application
@@ -80,9 +80,7 @@ app.get('/', function onAppStart(req, res) {
 	});
 });
 
-app.get('/verify', function onVerify(req, res, next) {
-	return tokenHandler.verify(req, res, next);
-});
+app.get('/verify', tokenHandler.verify);
 
 /**
  * Routes:: Not Found

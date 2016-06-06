@@ -18,8 +18,6 @@ function validTextLength(value) {
 
 var accountSchema = new mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId },
-	menu: { type: mongoose.Schema.Types.ObjectId },
-
 	resource: {
 		type: String,
 	},
