@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var validator = require('mongoose-validators');
 
 function validTextLength(value) {
-	return value.length > 300;
+	return value.length < 300;
 }
 
 var menuSchema = new mongoose.Schema({
@@ -13,11 +13,14 @@ var menuSchema = new mongoose.Schema({
 			requried: [true, 'Missing Title'],
 			validate: [validator.isAlpha, 'Invalid Title']
 		},
+		image: {
+			type: String
+		},
 		description: {
 			type: String,
 			validate: [validTextLength, 'Description is too long']
 		},
-		extra_information: {
+		extra: {
 			type: String,
 			validate: [validTextLength, 'Extra Information is too long']
 		}

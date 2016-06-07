@@ -20,9 +20,6 @@ function validTextLength(value) {
 
 var accountSchema = new mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId },
-	resource: {
-		type: String,
-	},
 	storename: {
 		type: String,
 		required: [true, 'Missing Storename'],

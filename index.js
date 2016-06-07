@@ -2,6 +2,7 @@ global.__base = __dirname;
 require('dotenv').config();
 
 var fs = require('fs');
+var util = require('app-util');
 var http = require('http');
 var https = require('https');
 var vhost = require('vhost');
@@ -10,8 +11,6 @@ var mongoose = require('mongoose');
 
 var express = require('express');
 var app = express();
-
-var util = require('app-util');
 
 var errorHandler = util.error;
 var tokenHandler = util.token;
