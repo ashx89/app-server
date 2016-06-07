@@ -19,6 +19,7 @@
   "dependencies": {
     "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
     "app-util": "git+https://github.com/ashx89/app-util.git#master",
+    "aws-sdk": "^2.3.17",
     "body-parser": "^1.15.1",
     "config": "^1.21.0",
     "cookie-parser": "^1.4.3",
