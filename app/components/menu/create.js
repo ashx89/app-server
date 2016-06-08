@@ -15,9 +15,11 @@ var create = function onCreate(req, res, next) {
 	};
 
 	if (req.body.image) {
-		item.image = req.user.resource + req.body.title + '.jpg';
+		console.log(req.body.image)
+		item.image = req.user.resource + req.body.title.replace(' ', '-') + '.jpg';
 
-		s3.save(req.user._id + '/' + req.body.title + '.jpg', req.body.image, function (err) {
+		s3.save(req.user._id + '/' + req.body.title.replace(' ', '-') + '.jpg', req.body.image, function (err, result) {
+			console.log(err, result);
 			if (err) return next(err);
 		});
 	}
