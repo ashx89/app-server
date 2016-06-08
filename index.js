@@ -8,6 +8,7 @@ var https = require('https');
 var vhost = require('vhost');
 var config = require('config');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 var express = require('express');
 var app = express();
@@ -31,8 +32,7 @@ app.set('forceSSLOptions', config.get('ssl'));
  * App Middleware
  */
 app.use(require('helmet').hsts({ maxAge: 123000, includeSubdomains: true, force: true }));
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('body-parser').json());
+app.use(bodyParser.urlencoded({ keepExtensions: true, extended: true }));
 app.use(require('express-validator')({
 	errorFormatter: function onFormat(param, message, value) {
 		return {
