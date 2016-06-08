@@ -1,6 +1,8 @@
 var path = require('path');
 var s3 = require('app-util').s3();
 
+var bucket = 'users/';
+
 /**
  * Menu Model
  */
@@ -26,7 +28,7 @@ var create = function onCreate(req, res, next) {
 
 		var params = {
 			ACL: 'public-read',
-			Key: req.user._id + '/' + filename,
+			Key: bucket + req.user._id + '/' + filename,
 			ContentType: req.file.mimetype,
 		};
 
