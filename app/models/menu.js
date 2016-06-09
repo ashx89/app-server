@@ -10,7 +10,7 @@ var menuSchema = new mongoose.Schema({
 	items: [{
 		title: {
 			type: String,
-			requried: [true, 'Missing Title'],
+			required: [true, 'Missing Title'],
 			validate: [validator.isAlpha, 'Invalid Title']
 		},
 		image: {

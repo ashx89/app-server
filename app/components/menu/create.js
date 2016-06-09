@@ -20,11 +20,7 @@ var create = function onCreate(req, res, next) {
 
 	if (req.file) {
 		var ext = path.extname(req.file.originalname);
-		var filename = req.body.title.replace(' ', '-') + ext;
-
-		filename = filename.toLowerCase();
-
-		item.image = req.user.resource + filename;
+		var filename = (req.body.title.replace(' ', '-') + '-' + Date.now() + ext).toLowerCase();
 
 		var params = {
 			ACL: 'public-read',
@@ -32,8 +28,11 @@ var create = function onCreate(req, res, next) {
 			ContentType: req.file.mimetype,
 		};
 
-		s3.save(params, req.file.buffer, function onSave(err, result) {
+		item.image = req.user.resource + filename;
+
+		s3.upload(params, req.file.buffer, function onSave(err, result) {
 			if (err) return next(err);
+			// item.image = result.Location;
 		});
 	}
 
