@@ -5,11 +5,12 @@ var app = express();
 
 app.get('/account', require('./account/fetch'));
 app.post('/account', require('./account/create'));
+app.post('/account/:id', require('./account/update'));
 
-//app.get('/menu', require('./menu/fetch'));
-app.post('/menu', multer().single('image'), require('./menu/create'));
-app.delete('/menu/:id', require('./menu/delete'));
-
-app.delete('/menu/:id/item/:itemid', require('./menu/item/delete'));
+app.get('/meals', require('./meals/fetch'));
+app.get('/meals/:id', require('./meals/fetch'));
+app.post('/meals', multer().single('image'), require('./meals/create'));
+app.patch('/meals/:id', multer().single('image'), require('./meals/update'));
+app.delete('/meals/:id', require('./meals/delete'));
 
 module.exports = app;

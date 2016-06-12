@@ -1,11 +1,5 @@
 /**
- * Create user folder on bucket
- */
-var s3 = require('app-util').s3();
-
-/**
- * User Model
- * Account Model
+ * Model
  */
 var Account = require(__base + '/app/models/account');
 

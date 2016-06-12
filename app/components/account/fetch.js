@@ -1,6 +1,5 @@
 /**
- * User Model
- * Account Model
+ * Model
  */
 var Account = require(__base + '/app/models/account');
 
