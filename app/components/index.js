@@ -5,7 +5,7 @@ var app = express();
 
 app.get('/account', require('./account/fetch'));
 app.post('/account', require('./account/create'));
-app.post('/account/:id', require('./account/update'));
+app.patch('/account', require('./account/update'));
 
 app.get('/meals', require('./meals/fetch'));
 app.get('/meals/:id', require('./meals/fetch'));

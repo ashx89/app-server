@@ -15,7 +15,7 @@ function validPostcodeLength(value) {
  * Check description character length
  */
 function validTextLength(value) {
-	return value.length > 300;
+	return value.length < 300;
 }
 
 var accountSchema = new mongoose.Schema({
@@ -49,16 +49,23 @@ var accountSchema = new mongoose.Schema({
 		location: {
 			type: [Number],
 			index: '2d'
-		}
+		},
+		country: {
+			type: String
+		},
+		country_code: {
+			type: String
+		},
 	},
 	cooking_days: {
 		type: Array,
 		required: [true, 'Missing Cooking Days']
 	},
-	meals_per_day: {
-		type: Number,
-		required: [true, 'Missing Meals per Day'],
-		validate: [validator.isNumeric, 'Invalid Meals per Day']
+	excluded_days: {
+		type: Array
+	},
+	currency: {
+		type: String
 	},
 	costs_tier: [{
 		price: {
@@ -66,10 +73,15 @@ var accountSchema = new mongoose.Schema({
 			required: [true, 'Missing Price Cost'],
 			validate: [validator.isNumeric, 'Invalid Price']
 		},
-		period: {
+		days: {
 			type: Number,
 			required: [true, 'Missing Number of Days'],
 			validate: [validator.isNumeric, 'Invalid Number of Days']
+		},
+		meals: {
+			type: Number,
+			required: [true, 'Missing Meals per Day'],
+			validate: [validator.isNumeric, 'Invalid Meals per Day']
 		}
 	}],
 	delivery: {
@@ -77,14 +89,17 @@ var accountSchema = new mongoose.Schema({
 			type: Number,
 			required: [true, 'Missing Delivery Radius']
 		},
-		min_cost: {
-			type: mongoose.Schema.Types.Mixed,
-			required: [true, 'Missing Minimum Delivery Cost'],
-			validate: [validator.isNumeric, 'Invalid Minimum Delivery Cost']
+		is_free: {
+			type: Boolean,
+			default: true
 		},
-		max_cost: {
-			type: mongoose.Schema.Types.Mixed,
-			required: [true, 'Missing Maximum Delivery Cost']
+		cost: {
+			type: Number,
+			required: [true, 'Missing Minimum Delivery Cost']
+		},
+		free_over: {
+			type: Number,
+			required: [true, 'Missing Cost for Free Delivery']
 		}
 	}
 }, {
@@ -103,20 +118,23 @@ accountSchema.virtual('fulladdress').get(function onGetFullAddress() {
  * Get the full address
  */
 accountSchema.virtual('minimum_order').get(function onGetMinimumOrder() {
-	return { price: this.costs_tier[0].price, period: this.costs_tier[0].period };
+	return { price: this.costs_tier[0].price, days: this.costs_tier[0].days };
 });
 
 accountSchema.pre('save', function onModelSave(next) {
 	var account = this;
 
+	// Set delivery radius. (miles * meteres in miles). Geocoder uses meteres
 	account.delivery.radius = parseInt(account.delivery.radius, 10) * METERS_IN_MILES;
 
-	if (account.delivery.min_cost === 0) account.delivery.min_cost = 'Free';
-	if (account.delivery.max_cost === 0) account.delivery.max_cost = 'Free';
+	if (account.delivery.is_free === true) account.delivery.free_over = undefined;
+	if (account.delivery.cost === 0) account.delivery.free_over = undefined;
 
 	geocoder.geocode(account.fulladdress, function onGeocode(err, res) {
 		if (err) return next(err);
 		account.address.location = [res[0].latitude, res[0].longitude];
+		account.address.country = res[0].country;
+		account.address.country_code = res[0].countryCode;
 		return next();
 	});
 });
