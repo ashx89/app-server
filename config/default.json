@@ -13,6 +13,8 @@
 		"/auth/logout",
 		"/auth/register",
 		"/auth/password-forgot",
-		"/auth/password-reset"
+		"/auth/password-reset",
+		"/auth/facebook",
+		"/auth/facebook/callback"
 	]
 }

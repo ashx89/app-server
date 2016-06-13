@@ -13,4 +13,7 @@ app.post('/meals', multer().single('image'), require('./meals/create'));
 app.patch('/meals/:id', multer().single('image'), require('./meals/update'));
 app.delete('/meals/:id', require('./meals/delete'));
 
+app.post('/basket', require('./basket').update);
+app.delete('/basket', require('./basket').delete);
+
 module.exports = app;

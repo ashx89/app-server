@@ -33,6 +33,7 @@ app.set('forceSSLOptions', config.get('ssl'));
  */
 app.use(require('helmet').hsts({ maxAge: 123000, includeSubdomains: true, force: true }));
 app.use(bodyParser.urlencoded({ keepExtensions: true, extended: true }));
+app.use(bodyParser.json())
 app.use(require('express-validator')({
 	errorFormatter: function onFormat(param, message, value) {
 		return {
@@ -68,7 +69,12 @@ app.get('/', function onAppStart(req, res) {
 	});
 });
 
-app.get('/verify', tokenHandler.verify);
+/**
+ * Return decoded token
+ */
+app.get('/verify', tokenHandler.verify, function onTokenVerify(req, res) {
+	return res.status(200).json(req.decoded);
+});
 
 app.all('*', function onNotFound(req, res) {
 	return res.status(404).json({
@@ -78,6 +84,9 @@ app.all('*', function onNotFound(req, res) {
 	});
 });
 
+/**
+ * Application Error Handling
+ */
 app.use(errorHandler);
 
 /**
