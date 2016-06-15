@@ -56,7 +56,7 @@ app.use(tokenHandler.require());
 /**
  * Import sub applications
  */
-var authenticationApp = require('app-auth');
+var authenticationApp = require('../app-auth');
 var componentsApp = require('./app/components');
 
 app.use(vhost(process.env.API_HOST, authenticationApp));

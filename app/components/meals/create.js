@@ -1,7 +1,15 @@
 var path = require('path');
 var s3 = require('app-util').s3();
 
-var bucket = 'users/';
+/**
+ * Image Upload
+ */
+var upload = require(__base + '/app/lib/upload');
+
+/**
+ * Folder to upload resource to
+ */
+var folder = 'users/';
 
 /**
  * Model
@@ -9,34 +17,39 @@ var bucket = 'users/';
 var Meal = require(__base + '/app/models/meal');
 
 /**
- * Create a meal item
+ * Save the updated model
+ * @param {object} meal. New model created
  */
-var create = function onCreate(req, res, next) {
-	var meal = new Meal(req.body);
-
+function databaseOperation(meal, req, res, next) {
 	meal.user = req.user._id;
-
-	if (req.file) {
-		var ext = path.extname(req.file.originalname);
-
-		var params = {
-			ACL: 'public-read',
-			Key: bucket + req.user._id + '/meals/' + meal._id + ext,
-			ContentType: req.file.mimetype,
-		};
-
-		meal.image = req.user.resource + 'meals/' + meal._id + ext;
-
-		s3.upload(params, req.file.buffer, function onS3Upload(err, result) {
-			if (err) return next(err);
-			meal.image = result.Location;
-		});
-	}
 
 	meal.save(function onMealSave(err) {
 		if (err) return next(err);
 		return res.status(200).json(meal);
 	});
+}
+
+/**
+ * Create a meal item
+ */
+var create = function onCreate(req, res, next) {
+	var meal = new Meal(req.body);
+
+	if (req.file) {
+		upload({
+			req: req,
+			model: meal,
+			folder: folder
+		}, function onImageUpload(err, result) {
+			if (err) return next(err);
+
+			meal.image = result;
+
+			return databaseOperation(meal, req, res, next);
+		});
+	} else {
+		return databaseOperation(meal, req, res, next);
+	}
 };
 
 module.exports = create;

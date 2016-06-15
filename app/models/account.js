@@ -29,6 +29,9 @@ var accountSchema = new mongoose.Schema({
 		type: String,
 		validate: [validTextLength, 'Description is too long']
 	},
+	image: {
+		type: String
+	},
 	address: {
 		address_line: {
 			type: String,

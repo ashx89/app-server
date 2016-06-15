@@ -1,8 +1,14 @@
 var _ = require('underscore');
-var path = require('path');
-var s3 = require('app-util').s3();
 
-var bucket = 'users/';
+/**
+ * Image Upload
+ */
+var upload = require(global.__base + '/app/lib/upload');
+
+/**
+ * Folder to upload resource to
+ */
+var folder = 'users/';
 
 /**
  * Model
@@ -10,39 +16,43 @@ var bucket = 'users/';
 var Meal = require(__base + '/app/models/meal');
 
 /**
+ * Save the updated model
+ * @param {object} meal. Data fetched from the database
+ */
+function databaseOperation(meal, req, res, next) {
+	meal = _.extend(meal, req.body);
+
+	meal.save(function onMealSave(err) {
+		if (err) return next(err);
+		return res.status(200).json(meal);
+	});
+}
+
+/**
  * Update a meal item
  */
 var update = function onUpdate(req, res, next) {
 	var id = req.params.id;
-	var meal = req.body;
 
-	if (req.file) {
-		var ext = path.extname(req.file.originalname);
-
-		var params = {
-			ACL: 'public-read',
-			Key: bucket + req.user._id + '/meals/' + id + ext,
-			ContentType: req.file.mimetype,
-		};
-
-		meal.image = req.user.resource + 'meals/' + id + ext;
-
-		s3.upload(params, req.file.buffer, function onS3Upload(err, result) {
-			if (err) return next(err);
-			meal.image = result.Location;
-		});
-	}
-
-	Meal.findById(id, function onMealUpdate(err, item) {
+	Meal.findOne({ _id: id, user: req.user._id }, function onMealUpdate(err, meal) {
 		if (err) return next(err);
-		if (!item) return next(new Error('No meal item found'));
+		if (!meal) return next(new Error('No meal item found'));
 
-		item = _.extend(item, meal);
+		if (req.file) {
+			upload({
+				req: req,
+				model: meal,
+				folder: folder
+			}, function onImageUpload(err, result) {
+				if (err) return next(err);
 
-		item.save(function onSave(err) {
-			if (err) return next(err);
-			return res.status(200).json(item);
-		});
+				req.body.image = result;
+
+				return databaseOperation(meal, req, res, next);
+			});
+		} else {
+			return databaseOperation(meal, req, res, next);
+		}
 	});
 };
 
