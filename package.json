@@ -19,7 +19,7 @@
   "dependencies": {
     "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
     "app-util": "git+https://github.com/ashx89/app-util.git#master",
-    "aws-sdk": "^2.3.17",
+    "aws-sdk": "^2.4.0",
     "body-parser": "^1.15.1",
     "config": "^1.21.0",
     "cookie-parser": "^1.4.3",
@@ -29,7 +29,7 @@
     "express-jwt": "^3.4.0",
     "express-validator": "^2.20.5",
     "helmet": "^2.1.0",
-    "jsonwebtoken": "^7.0.0",
+    "jsonwebtoken": "^7.0.1",
     "method-override": "^2.3.6",
     "mongoose": "^4.4.19",
     "mongoose-validators": "^0.1.0",
