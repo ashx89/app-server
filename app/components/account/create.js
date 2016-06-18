@@ -1,3 +1,10 @@
+var async = require('async');
+
+/**
+ * Stripe Customer
+ */
+var customers = require(__base + '/app/lib/customers');
+
 /**
  * Image Upload
  */
@@ -13,16 +20,49 @@ var folder = 'accounts/';
  */
 var Account = require(__base + '/app/models/account');
 
-/**
- * Save the updated model
- * @param {object} account. Data fetched from the database
- */
-function databaseOperation(account, req, res, next) {
+function findUserAccount(req, callback) {
+	Account.findOne({ user: req.user._id }, function onCheckExists(err, exists) {
+		if (err) return callback(err);
+		if (exists) return callback(new Error('An account already exists'));
+
+		var account = new Account(req.body);
+
+		return callback(null, req, account);
+	});
+}
+
+function createCustomerAccount(req, account, callback) {
+	customers.create(req.user, function onCustomerCreate(err, customer) {
+		if (err) return callback(err);
+
+		account.customer_id = customer.id;
+
+		return callback(null, req, account);
+	});
+}
+
+function uploadImage(req, account, callback) {
+	if (!req.file) return callback(null, req, account);
+
+	upload({
+		req: req,
+		model: account,
+		folder: folder
+	}, function onImageUpload(err, results) {
+		if (err) return callback(err);
+
+		account.image = results;
+
+		return callback(null, req, account);
+	});
+}
+
+function saveAccount(req, account, callback) {
 	account.user = req.user._id;
 
 	account.save(function onAccountSave(err) {
-		if (err) return next(err);
-		return res.status(200).json(account);
+		if (err) return callback(err);
+		return callback(null, account);
 	});
 }
 
@@ -30,27 +70,15 @@ function databaseOperation(account, req, res, next) {
  * Create an account
  */
 var create = function onCreate(req, res, next) {
-	Account.findOne({ user: req.user._id }, function onCheckExists(err, exists) {
+	async.waterfall([
+		async.apply(findUserAccount, req),
+		createCustomerAccount,
+		uploadImage,
+		saveAccount
+	], function onComplete(err, results) {
+		console.log(err, results);
 		if (err) return next(err);
-		if (exists) return next(new Error('An account already exists'));
-
-		var account = new Account(req.body);
-
-		if (req.file) {
-			upload({
-				req: req,
-				model: account,
-				folder: folder
-			}, function onImageUpload(err, result) {
-				if (err) return next(err);
-
-				account.image = result;
-
-				return databaseOperation(account, req, res, next);
-			});
-		} else {
-			return databaseOperation(account, req, res, next);
-		}
+		return res.status(200).json(results);
 	});
 };
 

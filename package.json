@@ -19,6 +19,7 @@
   "dependencies": {
     "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
     "app-util": "git+https://github.com/ashx89/app-util.git#master",
+    "async": "^2.0.0-rc.6",
     "aws-sdk": "^2.4.0",
     "body-parser": "^1.15.1",
     "config": "^1.21.0",
@@ -36,6 +37,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "node-geocoder": "^3.10.0",
+    "stripe": "^4.7.0",
     "underscore": "^1.8.3",
     "vhost": "^3.0.2"
   }

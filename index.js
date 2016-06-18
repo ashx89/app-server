@@ -58,9 +58,11 @@ app.use(tokenHandler.require());
  */
 var authenticationApp = require('app-auth');
 var componentsApp = require('./app/components');
+var ordersApp = require('../app-order');
 
 app.use(vhost(process.env.API_HOST, authenticationApp));
 app.use(vhost(process.env.API_HOST, componentsApp));
+app.use(vhost(process.env.API_HOST, ordersApp));
 
 app.get('/', function onAppStart(req, res) {
 	return res.status(200).json({
