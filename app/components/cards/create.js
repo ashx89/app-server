@@ -3,7 +3,7 @@ var cards = require(__base + '/app/lib/cards');
 var Account = require(__base + '/app/models/account');
 
 /**
- * Fetch a card
+ * Create a card
  */
 var create = function onFetch(req, res, next) {
 	Account.findOne({ user: req.user._id }, function onFind(err, account) {

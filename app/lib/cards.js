@@ -7,10 +7,10 @@ var card = {
 	 * @param {function} callback
 	 */
 	create: function onCardCreate(customerId, stripeToken, callback) {
-		if (!customerId) return callback(new Error('Invalid user details'), null);
+		if (!customerId) return callback(new Error('Invalid account details'), null);
 		if (!stripeToken) return callback(new Error('Invalid payment token'), null);
 
-		stripe.customers.createSource(req.user.customer_id, { source: req.body.stripeToken }, function onStripeCreate(err, results) {
+		stripe.customers.createSource(customerId, { source: stripeToken }, function onStripeCreate(err, results) {
 			return callback(err, results);
 		});
 	},
@@ -21,7 +21,7 @@ var card = {
 	 * @param {string} cardId
 	 * @param {function} callback
 	 */
-	fetch: function onCardFetch(customerId, cardId,, callback) {
+	fetch: function onCardFetch(customerId, cardId, callback) {
 		if (!customerId) return callback(new Error('Invalid Customer ID'), null);
 		if (!cardId) return callback(new Error('Invalid Card ID'), null);
 
@@ -35,7 +35,7 @@ var card = {
 	 * @param {string} customerID
 	 * @param {function} callback
 	 */
-	fetchAll: function onCardsFetch(customerId,, callback) {
+	fetchAll: function onCardsFetch(customerId, callback) {
 		if (!customerId) return callback(new Error('Invalid Customer ID'), null);
 
 		stripe.customers.listCards(customerId, function(err, results) {

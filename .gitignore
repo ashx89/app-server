@@ -1,4 +1,5 @@
 .env
 server.*
 node_modules
+__views
 __examples

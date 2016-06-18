@@ -53,6 +53,15 @@ app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
 app.use(tokenHandler.require());
 
+app.set('view engine', 'html');
+app.set('views', require('path').join(__dirname, '__views'));
+
+app.get('/views/card', function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	return res.sendfile('__views/card.html');
+});
+
 /**
  * Import sub applications
  */

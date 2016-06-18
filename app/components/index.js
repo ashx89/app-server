@@ -28,4 +28,11 @@ app.patch('/meals/:id', uploadImage, require('./meals/update'));
 app.post('/basket', require('./basket').update);
 app.delete('/basket', require('./basket').delete);
 
+/**
+ * Rest:: Card
+ */
+app.get('/cards', require('./cards/fetch'));
+app.get('/cards/:id', require('./cards/fetch'));
+app.post('/cards', require('./cards/create'));
+
 module.exports = app;

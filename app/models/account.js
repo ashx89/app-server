@@ -100,12 +100,10 @@ var accountSchema = new mongoose.Schema({
 			default: true
 		},
 		cost: {
-			type: Number,
-			required: [true, 'Missing Minimum Delivery Cost']
+			type: Number
 		},
 		free_over: {
-			type: Number,
-			required: [true, 'Missing Cost for Free Delivery']
+			type: Number
 		}
 	}
 }, {
