@@ -25,14 +25,14 @@ app.patch('/meals/:id', uploadImage, require('./meals/update'));
 /**
  * Rest:: Basket
  */
-app.post('/basket', require('./basket').update);
-app.delete('/basket', require('./basket').delete);
+app.post('/basket', require('./checkout/basket').update);
+app.delete('/basket', require('./checkout/basket').delete);
 
 /**
  * Rest:: Card
  */
-app.get('/cards', require('./cards/fetch'));
-app.get('/cards/:id', require('./cards/fetch'));
-app.post('/cards', require('./cards/create'));
+app.get('/cards', require('./checkout/cards/fetch'));
+app.get('/cards/:id', require('./checkout/cards/fetch'));
+app.post('/cards', require('./checkout/cards/create'));
 
 module.exports = app;

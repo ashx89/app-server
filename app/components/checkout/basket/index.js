@@ -19,27 +19,13 @@ module.exports = {
 	basket: {
 		prepmaker_id: "",
 		note: "",
-		currency_code: "GBP",
-		currency_symbol: "£",
-		country_code: "GB",
-		quantity: "",
-		meals_cost: "",
-		meals_duration: "",
-		meals_in_order: "",
-		meal: [],
-		prep_charge: "",
-		subtotal: "",
-		total: "",
-		user_address: ""
-	},
-	preperation: {
-		cooking_day: "",
-		delivery_day: "",
-		deliver_to: ""
-	},
-	payment: {
-		debit_amount: "",
-		debit_amount_total: ""
+		items: [{
+			id: "",
+			title: "",
+			cost_tier: "",
+			cooking_day: ""
+		}]
+		subtotal: ""
 	}
 }
 */

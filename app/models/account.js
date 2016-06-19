@@ -25,7 +25,6 @@ var accountSchema = new mongoose.Schema({
 	
 	storename: {
 		type: String,
-		required: [true, 'Missing Storename'],
 		validate: [validator.isAlpha, 'Invalid Storename']
 	},
 	description: {
@@ -35,6 +34,12 @@ var accountSchema = new mongoose.Schema({
 	image: {
 		type: String
 	},
+
+	phonenumber: {
+		type: String,
+		validate: [validator.isNumeric, 'Invalid Phone Number']
+	},
+
 	address: {
 		address_line: {
 			type: String,
@@ -46,7 +51,6 @@ var accountSchema = new mongoose.Schema({
 		},
 		postcode: {
 			type: String,
-			required: [true, 'Missing Postcode'],
 			validate: [
 				{ validator: validator.isAlphanumeric, message: 'Invalid Postcode' },
 				{ validator: validPostcodeLength, message: 'Invalid Postcode' }
@@ -63,37 +67,29 @@ var accountSchema = new mongoose.Schema({
 			type: String
 		},
 	},
-	cooking_days: {
-		type: Array,
-		required: [true, 'Missing Cooking Days']
-	},
-	excluded_days: {
-		type: Array
-	},
-	currency: {
-		type: String
-	},
+	cooking_days: Array,
+
+	excluded_days: Array,
+
+	currency: String,
+
 	costs_tier: [{
 		price: {
 			type: Number,
-			required: [true, 'Missing Price Cost'],
 			validate: [validator.isNumeric, 'Invalid Price']
 		},
 		days: {
 			type: Number,
-			required: [true, 'Missing Number of Days'],
 			validate: [validator.isNumeric, 'Invalid Number of Days']
 		},
 		meals: {
 			type: Number,
-			required: [true, 'Missing Meals per Day'],
 			validate: [validator.isNumeric, 'Invalid Meals per Day']
 		}
 	}],
 	delivery: {
 		radius: {
 			type: Number,
-			required: [true, 'Missing Delivery Radius']
 		},
 		is_free: {
 			type: Boolean,

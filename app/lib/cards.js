@@ -41,7 +41,22 @@ var card = {
 		stripe.customers.listCards(customerId, function(err, results) {
 			return callback(err, results);
 		});
-	}
+	},
+
+	/**
+	 * Delete a stripe card
+	 * @param {string} customerId
+	 * @param {string} cardId
+	 * @param {function} callback
+	 */
+	delete: function onCardDelete(customerId, cardId, callback) {
+		if (!customerId) return callback(new Error('Invalid Customer ID'), null);
+		if (!cardId) return callback(new Error('Invalid Card ID'), null);
+
+		stripe.customers.deleteCard(customerId, cardId, function onStripeFetch(err, results) {
+			return callback(err, results);
+		});
+	},
 };
 
 module.exports = card;

@@ -13,7 +13,7 @@ var customer = {
 			email: user.email,
 			description: user.email,
 			metadata: {
-				user_id: user._id
+				user: user._id
 			}
 		};
 

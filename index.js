@@ -33,7 +33,7 @@ app.set('forceSSLOptions', config.get('ssl'));
  */
 app.use(require('helmet').hsts({ maxAge: 123000, includeSubdomains: true, force: true }));
 app.use(bodyParser.urlencoded({ keepExtensions: true, extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(require('express-validator')({
 	errorFormatter: function onFormat(param, message, value) {
 		return {
@@ -56,9 +56,9 @@ app.use(tokenHandler.require());
 app.set('view engine', 'html');
 app.set('views', require('path').join(__dirname, '__views'));
 
-app.get('/views/card', function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+app.get('/views/card', function onCardViewRender(req, res) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
 	return res.sendfile('__views/card.html');
 });
 
