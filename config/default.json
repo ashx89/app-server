@@ -16,6 +16,7 @@
 		"/auth/password-reset",
 		"/auth/facebook",
 		"/auth/facebook/callback",
+		"/views/svg",
 		"/views/card"
 	]
 }

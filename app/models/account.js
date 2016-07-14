@@ -21,7 +21,6 @@ function validTextLength(value) {
 var accountSchema = new mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId },
 	customer_id: String,
-	cards: Array,
 	
 	storename: {
 		type: String,

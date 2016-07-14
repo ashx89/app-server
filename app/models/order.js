@@ -11,6 +11,8 @@ var orderSchema = new mongoose.Schema({
 	total_meals: Number,
 	scheduled_cooking_day: String,
 
+	status: String,
+	
 	note: {
 		type: String,
 		validate: [validator.isAlphanumeric, 'Invalid Note']

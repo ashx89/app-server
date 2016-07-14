@@ -1,6 +1,11 @@
 var path = require('path');
 var s3 = require('app-util').s3();
 
+/**
+ * Upload a file to a users account folder
+ * @param {objects} options. { req:ExpressObject, folder:String, model:MongooseObject }
+ * @param {function} callback
+ */
 var upload = function onImageUpload(options, callback) {
 	if (!options.req ||
 		!options.folder ||
@@ -24,6 +29,7 @@ var upload = function onImageUpload(options, callback) {
 
 	s3.upload(params, req.file.buffer, function onS3Upload(err, result) {
 		if (err) return callback(err, null);
+
 		model.image = result.Location;
 
 		return callback(null, model.image);

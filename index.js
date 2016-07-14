@@ -56,22 +56,18 @@ app.use(tokenHandler.require());
 app.set('view engine', 'html');
 app.set('views', require('path').join(__dirname, '__views'));
 
-app.get('/views/card', function onCardViewRender(req, res) {
+app.get('/views/:view', function onCardViewRender(req, res) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-	return res.sendfile('__views/card.html');
+	return res.sendfile('__views/' + req.params.view + '.html');
 });
 
 /**
  * Import sub applications
  */
-var authenticationApp = require('app-auth');
-var componentsApp = require('./app/components');
-var ordersApp = require('../app-order');
-
-app.use(vhost(process.env.API_HOST, authenticationApp));
-app.use(vhost(process.env.API_HOST, componentsApp));
-app.use(vhost(process.env.API_HOST, ordersApp));
+app.use(vhost(process.env.API_HOST, require('app-auth')));
+app.use(vhost(process.env.API_HOST, require('../app-payment')));
+app.use(vhost(process.env.API_HOST, require('./app/components')));
 
 app.get('/', function onAppStart(req, res) {
 	return res.status(200).json({
