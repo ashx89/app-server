@@ -3,7 +3,7 @@ var async = require('async');
 /**
  * Stripe Customer
  */
-var customers = require(__base + '/app/lib/customers');
+var customers = require('app-payment').customers;
 
 /**
  * Image Upload

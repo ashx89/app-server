@@ -14,8 +14,9 @@ var express = require('express');
 var app = express();
 
 var errorHandler = util.error;
-var tokenHandler = util.token;
+var paymentErrorHandler = util.paymentError;
 
+var tokenHandler = util.token;
 tokenHandler.setConfig(config);
 
 /**
@@ -94,6 +95,7 @@ app.all('*', function onNotFound(req, res) {
 /**
  * Application Error Handling
  */
+// app.use(paymentErrorHandler);
 app.use(errorHandler);
 
 /**
