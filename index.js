@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
-var errorHandler = util.error;
+var applicationErrorHandler = util.applicationError;
 var paymentErrorHandler = util.paymentError;
 
 var tokenHandler = util.token;
@@ -96,7 +96,7 @@ app.all('*', function onNotFound(req, res) {
  * Application Error Handling
  */
 // app.use(paymentErrorHandler);
-app.use(errorHandler);
+app.use(applicationErrorHandler);
 
 /**
  * HTTP Connection
