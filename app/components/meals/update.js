@@ -1,8 +1,4 @@
 var _ = require('underscore');
-
-/**
- * Image Upload
- */
 var upload = require('app-util').upload;
 
 /**

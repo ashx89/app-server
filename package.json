@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/ashx89/app-server#readme",
   "dependencies": {
-    "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
-    "app-util": "git+https://github.com/ashx89/app-util.git#master",
-    "app-accounts": "git+https://github.com/ashx89/app-accounts.git#master",
-    "app-payment": "git+https://github.com/ashx89/app-payment.git#master",
+    "app-auth": "git+https://github.com/ashx89/app-auth.git",
+    "app-util": "git+https://github.com/ashx89/app-util.git",
+    "app-accounts": "git+https://github.com/ashx89/app-accounts.git",
+    "app-payment": "git+https://github.com/ashx89/app-payment.git",
     "async": "^2.0.0-rc.6",
     "aws-sdk": "^2.4.0",
     "body-parser": "^1.15.1",
@@ -42,5 +42,6 @@
     "stripe": "^4.7.0",
     "underscore": "^1.8.3",
     "vhost": "^3.0.2"
-  }
+  },
+  "devDependencies": {}
 }
