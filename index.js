@@ -2,7 +2,7 @@ global.__base = __dirname;
 require('dotenv').config();
 
 var fs = require('fs');
-var util = require('app-util');
+var util = require('../app-util');
 var http = require('http');
 var https = require('https');
 var vhost = require('vhost');
@@ -12,9 +12,6 @@ var bodyParser = require('body-parser');
 
 var express = require('express');
 var app = express();
-
-var applicationErrorHandler = util.applicationError;
-var paymentErrorHandler = util.paymentError;
 
 var tokenHandler = util.token;
 tokenHandler.setConfig(config);
@@ -67,6 +64,7 @@ app.get('/views/:view', function onCardViewRender(req, res) {
  * Import sub applications
  */
 app.use(vhost(process.env.API_HOST, require('app-auth')));
+app.use(vhost(process.env.API_HOST, require('app-accounts')));
 app.use(vhost(process.env.API_HOST, require('../app-payment')));
 app.use(vhost(process.env.API_HOST, require('./app/components')));
 
@@ -95,8 +93,8 @@ app.all('*', function onNotFound(req, res) {
 /**
  * Application Error Handling
  */
-// app.use(paymentErrorHandler);
-app.use(applicationErrorHandler);
+app.use(util.paymentError);
+app.use(util.applicationError);
 
 /**
  * HTTP Connection

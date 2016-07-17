@@ -19,6 +19,7 @@
   "dependencies": {
     "app-auth": "git+https://github.com/ashx89/app-auth.git#master",
     "app-util": "git+https://github.com/ashx89/app-util.git#master",
+    "app-accounts": "git+https://github.com/ashx89/app-accounts.git#master",
     "app-payment": "git+https://github.com/ashx89/app-payment.git#master",
     "async": "^2.0.0-rc.6",
     "aws-sdk": "^2.4.0",

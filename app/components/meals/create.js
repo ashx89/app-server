@@ -1,15 +1,6 @@
 var path = require('path');
 var s3 = require('app-util').s3();
-
-/**
- * Image Upload
- */
-var upload = require(__base + '/app/lib/upload');
-
-/**
- * Folder to upload resource to
- */
-var folder = 'users/';
+var upload = require('app-util').upload;
 
 /**
  * Model
@@ -39,7 +30,7 @@ var create = function onCreate(req, res, next) {
 		upload({
 			req: req,
 			model: meal,
-			folder: folder
+			folder: 'meals'
 		}, function onImageUpload(err, result) {
 			if (err) return next(err);
 

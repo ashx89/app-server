@@ -3,12 +3,7 @@ var _ = require('underscore');
 /**
  * Image Upload
  */
-var upload = require(global.__base + '/app/lib/upload');
-
-/**
- * Folder to upload resource to
- */
-var folder = 'users/';
+var upload = require('app-util').upload;
 
 /**
  * Model
@@ -42,7 +37,7 @@ var update = function onUpdate(req, res, next) {
 			upload({
 				req: req,
 				model: meal,
-				folder: folder
+				folder: 'meals'
 			}, function onImageUpload(err, result) {
 				if (err) return next(err);
 

@@ -6,13 +6,6 @@ var app = express();
 var uploadImage = multer().single('image');
 
 /**
- * Rest:: Account
- */
-app.get('/account', require('./account/fetch'));
-app.post('/account', uploadImage, require('./account/create'));
-app.patch('/account', uploadImage, require('./account/update'));
-
-/**
  * Rest:: Meals
  */
 app.get('/meals', require('./meals/fetch'));
