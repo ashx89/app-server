@@ -2,7 +2,7 @@ global.__base = __dirname;
 require('dotenv').config();
 
 var fs = require('fs');
-var util = require('../app-util');
+var util = require('app-util');
 var http = require('http');
 var https = require('https');
 var vhost = require('vhost');
@@ -63,8 +63,9 @@ app.get('/views/:view', function onCardViewRender(req, res) {
 /**
  * Import sub applications
  */
-app.use(vhost(process.env.API_HOST, require('app-auth')));
-app.use(vhost(process.env.API_HOST, require('app-accounts')));
+app.use(vhost(process.env.API_HOST, require('app-auth').app));
+app.use(vhost(process.env.API_HOST, require('app-accounts').app));
+
 app.use(vhost(process.env.API_HOST, require('../app-payment')));
 app.use(vhost(process.env.API_HOST, require('./app/components')));
 
