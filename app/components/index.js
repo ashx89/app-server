@@ -15,10 +15,4 @@ app.delete('/meals/:id', require('./meals/delete'));
 app.post('/meals', uploadImage, require('./meals/create'));
 app.patch('/meals/:id', uploadImage, require('./meals/update'));
 
-/**
- * Rest:: Basket
- */
-app.post('/basket', require('./checkout/basket').update);
-app.delete('/basket', require('./checkout/basket').delete);
-
 module.exports = app;
