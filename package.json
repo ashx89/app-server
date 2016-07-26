@@ -20,6 +20,7 @@
     "app-accounts": "git+https://github.com/ashx89/app-accounts.git",
     "app-auth": "git+https://github.com/ashx89/app-auth.git",
     "app-orders": "git+https://github.com/ashx89/app-orders.git",
+    "app-products": "git+https://github.com/ashx89/app-products.git",
     "app-util": "git+https://github.com/ashx89/app-util.git",
     "async": "^2.0.0-rc.6",
     "aws-sdk": "^2.4.0",
@@ -36,6 +37,7 @@
     "mongoose-validator": "^1.2.5",
     "mongoose-validators": "^0.1.0",
     "morgan": "^1.7.0",
+    "multer": "^1.1.0",
     "underscore": "^1.8.3",
     "vhost": "^3.0.2"
   },

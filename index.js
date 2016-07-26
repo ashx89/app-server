@@ -63,11 +63,10 @@ app.get('/views/:view', function onCardViewRender(req, res) {
 /**
  * Import sub applications
  */
-app.use(vhost(process.env.API_HOST, require('app-auth')));
+app.use(vhost(process.env.API_HOST, require('app-auth').app));
 app.use(vhost(process.env.API_HOST, require('app-accounts').app));
 app.use(vhost(process.env.API_HOST, require('app-orders').app));
-
-app.use(vhost(process.env.API_HOST, require('./app/components')));
+app.use(vhost(process.env.API_HOST, require('app-products').app));
 
 app.get('/', function onAppStart(req, res) {
 	return res.status(200).json({
