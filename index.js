@@ -13,12 +13,16 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
+/**
+ *	Passes routes to token that do not need to be verified
+ */
 var tokenHandler = util.token;
 tokenHandler.setConfig(config);
 
 /**
  * App Settings
  */
+mongoose.Promise = require('bluebird');
 app.set('json spaces', 2);
 app.enable('trust proxy');
 app.disable('x-powered-by');
@@ -51,6 +55,9 @@ app.use(require('morgan')('dev'));
 app.use(require('express-force-ssl'));
 app.use(tokenHandler.require());
 
+/**
+ * Temporary Developer Views
+ */
 app.set('view engine', 'html');
 app.set('views', require('path').join(__dirname, '__views'));
 
@@ -82,6 +89,9 @@ app.get('/verify', tokenHandler.verify, function onTokenVerify(req, res) {
 	return res.status(200).json(req.decoded);
 });
 
+/**
+ * Uncaptured routes
+ */
 app.all('*', function onNotFound(req, res) {
 	return res.status(404).json({
 		title: 'Resource not found',
