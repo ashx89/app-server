@@ -1,7 +1,6 @@
 # Application Server
 
 ### Authentication
-~~~
 Verb | Route | Description
 --- | --- | ---
 POST | /auth/register | desc
@@ -11,10 +10,9 @@ POST | /auth/password-forgot | desc
 GET | /auth/password-reset?token=emailResetToken | desc
 POST | /auth/password-reset?token=emailResetToken | desc
 GET | /users/search | search all users
-~~~
+
 
 ### Accounts
-~~~
 Verb | Route | Description
 --- | --- | ---
 GET | /accounts | fetch *logged in* users account
@@ -22,10 +20,8 @@ GET | /accounts/{id} | fetch a single users account
 POST | /accounts | create new account
 PATCH | /accounts | update *logged in* users account
 GET | /accounts/search | search all accounts
-~~~
 
 ### Products
-~~~
 Verb | Route | Description
 --- | --- | ---
 GET | /{product} | fetch *logged in* users products
@@ -34,10 +30,8 @@ POST | /{product} | create a new product
 PATCH | /{product}/{id} | update *logged in* users product
 DELETE | /{product}/{id} | delete *logged in* users product
 GET | /{product}/search | search all products
-~~~
 
 ### Orders
-~~~
 Verb | Route | Description
 --- | --- | ---
 POST | /basket | create/update a basket
@@ -58,5 +52,5 @@ DELETE | /cards/{id} | delete *logged in* users card `[stripe]`
 
 GET | /customers | fetch *logged in* users customer details `[stripe]`
 POST | /customers | create a new customer `[stripe]`
-~~~
+
 
