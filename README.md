@@ -31,26 +31,37 @@ PATCH | /{product}/{id} | update *logged in* users product
 DELETE | /{product}/{id} | delete *logged in* users product
 GET | /{product}/search | search all products
 
-### Orders
+### Order
+Verb | Route | Description
+--- | --- | ---
+GET | /orders | fetch *logged in* users orders
+GET /orders/{id} | fetch a single *logged in* users order
+POST | /orders | create a new order
+
+### Basket (orders)
 Verb | Route | Description
 --- | --- | ---
 POST | /basket | create/update a basket
 DELETE | /basket | delete a basket
 
-GET | /orders | fetch *logged in* users orders
-GET /orders/{id} | fetch a single *logged in* users order
-POST | /orders | create a new order
-
+### Charges (orders | stripe)
+Verb | Route | Description
+--- | --- | ---
 GET | /charges | fetch *logged in* users charges `[stripe]`
 GET | /charges/{id} | fetch a single *logged in* users charge `[stripe]`
 POST | /charges | create a new charge `[stripe]`
 
+### Cards (orders | stripe)
+Verb | Route | Description
+--- | --- | ---
 GET | /cards | fetch *logged in* users cards `[stripe]`
 GET | /cards/{id} | fetch a single *logged in* users card `[stripe]`
 POST | /cards | create a new card `[stripe]`
 DELETE | /cards/{id} | delete *logged in* users card `[stripe]`
 
+### Customers (orders | stripe)
+Verb | Route | Description
+--- | --- | ---
 GET | /customers | fetch *logged in* users customer details `[stripe]`
 POST | /customers | create a new customer `[stripe]`
-
 
