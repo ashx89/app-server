@@ -44,14 +44,14 @@ Verb | Route | Description
 POST | /basket | create/update a basket
 DELETE | /basket | delete a basket
 
-### Charges (orders | stripe)
+### Charges (orders)
 Verb | Route | Description
 --- | --- | ---
 GET | /charges | fetch *logged in* users charges `[stripe]`
 GET | /charges/{id} | fetch a single *logged in* users charge `[stripe]`
 POST | /charges | create a new charge `[stripe]`
 
-### Cards (orders | stripe)
+### Cards (orders)
 Verb | Route | Description
 --- | --- | ---
 GET | /cards | fetch *logged in* users cards `[stripe]`
@@ -59,7 +59,7 @@ GET | /cards/{id} | fetch a single *logged in* users card `[stripe]`
 POST | /cards | create a new card `[stripe]`
 DELETE | /cards/{id} | delete *logged in* users card `[stripe]`
 
-### Customers (orders | stripe)
+### Customers (orders)
 Verb | Route | Description
 --- | --- | ---
 GET | /customers | fetch *logged in* users customer details `[stripe]`
