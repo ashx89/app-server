@@ -14,7 +14,7 @@ var express = require('express');
 var app = express();
 
 /**
- *	Passes routes to token that do not need to be verified
+ * Passes routes to token that do not need to be verified
  */
 var tokenHandler = util.token;
 tokenHandler.setConfig(config);
@@ -68,14 +68,8 @@ app.get('/views/:view', function onCardViewRender(req, res) {
 });
 
 /**
- * Import sub applications
+ * Application base path
  */
-app.use(vhost(process.env.API_HOST, require('app-auth').app));
-app.use(vhost(process.env.API_HOST, require('app-accounts').app));
-app.use(vhost(process.env.API_HOST, require('app-orders').app));
-app.use(vhost(process.env.API_HOST, require('app-products').app)); // must be last route
-
-
 app.get('/', function onAppStart(req, res) {
 	return res.status(200).json({
 		status: 200,
@@ -84,11 +78,26 @@ app.get('/', function onAppStart(req, res) {
 });
 
 /**
+ * Return application status
+ */
+app.get('/status', function onStatusCheck(req, res) {
+	return res.status(200).json({ status: 200 });
+});
+
+/**
  * Return decoded token
  */
 app.get('/verify', tokenHandler.verify, function onTokenVerify(req, res) {
 	return res.status(200).json(req.decoded);
 });
+
+/**
+ * Import sub applications
+ */
+app.use(vhost(process.env.API_HOST, require('app-auth').app));
+app.use(vhost(process.env.API_HOST, require('app-accounts').app));
+app.use(vhost(process.env.API_HOST, require('app-orders').app));
+app.use(vhost(process.env.API_HOST, require('app-products').app));
 
 /**
  * Uncaptured routes
