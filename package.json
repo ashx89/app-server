@@ -22,6 +22,7 @@
     "app-orders": "git+https://github.com/ashx89/app-orders.git",
     "app-products": "git+https://github.com/ashx89/app-products.git",
     "app-util": "git+https://github.com/ashx89/app-util.git",
+    "app-search": "git+https://github.com/ashx89/app-search.git",
     "async": "^2.0.0-rc.6",
     "aws-sdk": "^2.4.0",
     "bluebird": "^3.4.1",
